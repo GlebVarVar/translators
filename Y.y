@@ -10,15 +10,11 @@ extern FILE* yyout;
 
 int yylex();
 
-char* toLowerString(const char* str) {
-    char* result = strdup(str);
-    int len = strlen(result);
-    
-    for (int i = 0; i < len; ++i) {
-        result[i] = tolower(result[i]);
-    }
-    
-    return result;
+#define CONCATENATE(dest, ...) { \
+    char* args[] = {__VA_ARGS__, NULL}; \
+    for (int i = 0; args[i] != NULL; i++) { \
+        strcat(dest, args[i]); \
+    } \
 }
 
 %}
@@ -44,9 +40,9 @@ COMMANDS:
     | COMMANDS COMMAND {strcpy($$, $1); strcat($$, $2);}
 
 COMMAND:
-    DECLARATION {strcpy($$, $1); }
-    | IF_LOGIC {strcpy($$, $1);}
-    | CYCLE_LOGIC {strcpy($$, $1);}
+    DECLARATION 
+    | IF_LOGIC
+    | CYCLE_LOGIC 
     | SEMICOLON {strcpy($$, $1);}
 
 DECLARATION:
@@ -56,50 +52,50 @@ DECLARATION:
 DECLAR:
     LETTERS TYPE TYPES_LOGIC { 
         printf("%s %s %s\n", $1, $2, $3);
-        strcpy($$, $3); strcat($$, " "); strcat($$, $1);
+        strcpy($$, $3); CONCATENATE($$, " ", $1);
     }
     | LETTERS ASSIGN EXP SIGNS EXP {
         printf("%s %s %s %s %s\n", $1, $2, $3, $4, $5);
-        strcpy($$, $1); strcat($$, $2); strcat($$, $3); strcat($$, $4); strcat($$, $5);
+        strcpy($$, $1); CONCATENATE($$, $2, $3, $4, $5);
     }
     | LETTERS ASSIGN BOOLS_LOGIC {
         printf("%s %s %s\n", $1, $2, $3);
-        strcpy($$, $1); strcat($$, $2); strcat($$, $3);
+        strcpy($$, $1); CONCATENATE($$, $2, $3);
     }
     | EXP EQUAL EXP {
         printf("%s %s %s\n", $1, $2, $3);
-        strcpy($$, $1); strcat($$, $2); strcat($$, $3); 
+        strcpy($$, $1); CONCATENATE($$, $2, $3); 
     }
     | EXP SIGNS EXP {
         printf("%s %s %s\n", $1, $2, $3);
-        strcpy($$, $1); strcat($$, $2); strcat($$, $3);
+        strcpy($$, $1); CONCATENATE($$, $2, $3);
     }
     | LETTERS ASSIGN EXP {
-        strcpy($$, $1); strcat($$, $2); strcat($$, $3);
+        strcpy($$, $1); CONCATENATE($$, $2, $3);
     }
 
 IF_LOGIC:
     IF DECLARATION THEN { 
-        strcpy($$, $1); strcat($$, " ("); strcat($$, $2); strcat($$, ") "); strcat($$, $3); strcat($$, "\n");
+        strcpy($$, $1); CONCATENATE($$, " (", $2, ") ", $3, "\n");
     }
-    | ELSE { strcpy($$, "} "); strcat($$, $1); strcat($$, " {\n"); }
-    | ELSEIF DECLAR { strcpy($$, "} "); strcat($$, $1); strcat($$, " "); strcat($$, $2); strcat($$, " {\n"); }
+    | ELSE { strcpy($$, "} "); CONCATENATE($$, $1, " {\n");}
+    | ELSEIF DECLAR { strcpy($$, "} "); CONCATENATE($$, $1, " ", $2, " {\n");} 
     | END_IF {strcpy($$, $1); strcat($$, "\n");}
 
 CYCLE_LOGIC:
     FOR LETTERS ASSIGN NUMBERS TO NUMBERS BY NUMBERS DO {
         printf("%s %s %s %s %s %s %s %s %s\n", $1, $2, $3, $4, $5, $6, $7, $8, $9);
         strcpy($$, $1); strcat($$, " ("); 
-        strcat($$, $2); strcat($$, $3); strcat($$, $4); strcat($$, "; ");
-        strcat($$, $2); strcat($$, "<"); strcat($$, $6); strcat($$, "; ");
-        strcat($$, $2); strcat($$, "="); strcat($$, $2); strcat($$, "+"); strcat($$, $8); strcat($$, ";");
-        strcat($$, ") "); strcat($$, $9); strcat($$, "\n");
+        CONCATENATE($$,$2, $3, $4,"; " );
+        CONCATENATE($$,$2, "<", $6,  "; ");
+        CONCATENATE($$, $2, "=", $2, "+", $8, ";")
+        CONCATENATE($$, ") ", $9, "\n")
     }
     | WHILE DECLAR DO {
-        strcpy($$, $1); strcat($$, " ("); strcat($$, $2); strcat($$, ") "); strcat($$, $3); strcat($$, "\n");  
+        strcpy($$, $1); CONCATENATE($$, " (", $2, ") ", $3, "\n");  
     }
     | REPEAT {strcpy($$, $1); strcat($$, " {\n");}
-    | UNTIL DECLAR {strcpy($$, "} "); strcat($$, $1); strcat($$, " ("); strcat($$, $2); strcat($$, ");\n");}
+    | UNTIL DECLAR { CONCATENATE($$, "} ", $1, " (", $2, ");\n");}
     | END_FOR {strcpy($$, $1); strcat($$, "\n");}
     | END_WHILE {strcpy($$, $1); strcat($$, "\n");}
 

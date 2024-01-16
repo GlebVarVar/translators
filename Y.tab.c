@@ -81,21 +81,17 @@ extern FILE* yyout;
 
 int yylex();
 
-char* toLowerString(const char* str) {
-    char* result = strdup(str);
-    int len = strlen(result);
-    
-    for (int i = 0; i < len; ++i) {
-        result[i] = tolower(result[i]);
-    }
-    
-    return result;
+#define CONCATENATE(dest, ...) { \
+    char* args[] = {__VA_ARGS__, NULL}; \
+    for (int i = 0; args[i] != NULL; i++) { \
+        strcat(dest, args[i]); \
+    } \
 }
 
 
 
 /* Line 189 of yacc.c  */
-#line 99 "Y.tab.c"
+#line 95 "Y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -161,7 +157,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 26 "Y.y"
+#line 22 "Y.y"
 
     char data[20];
     char code[1000];
@@ -169,7 +165,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 173 "Y.tab.c"
+#line 169 "Y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -181,7 +177,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 185 "Y.tab.c"
+#line 181 "Y.tab.c"
 
 #ifdef short
 # undef short
@@ -477,10 +473,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    40,    40,    43,    44,    47,    48,    49,    50,    53,
-      54,    57,    61,    65,    69,    73,    77,    82,    85,    86,
-      87,    90,    98,   101,   102,   103,   104,   107,   108,   111,
-     112,   115,   116,   117
+       0,    36,    36,    39,    40,    43,    44,    45,    46,    49,
+      50,    53,    57,    61,    65,    69,    73,    78,    81,    82,
+      83,    86,    94,    97,    98,    99,   100,   103,   104,   107,
+     108,   111,   112,   113
 };
 #endif
 
@@ -1417,259 +1413,238 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 40 "Y.y"
+#line 36 "Y.y"
     { fprintf(yyout, "%s", (yyvsp[(1) - (1)].code));;}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 43 "Y.y"
+#line 39 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].code));;}
     break;
 
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 44 "Y.y"
+#line 40 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (2)].code)); strcat((yyval.code), (yyvsp[(2) - (2)].code));;}
-    break;
-
-  case 5:
-
-/* Line 1455 of yacc.c  */
-#line 47 "Y.y"
-    {strcpy((yyval.code), (yyvsp[(1) - (1)].code)); ;}
-    break;
-
-  case 6:
-
-/* Line 1455 of yacc.c  */
-#line 48 "Y.y"
-    {strcpy((yyval.code), (yyvsp[(1) - (1)].code));;}
-    break;
-
-  case 7:
-
-/* Line 1455 of yacc.c  */
-#line 49 "Y.y"
-    {strcpy((yyval.code), (yyvsp[(1) - (1)].code));;}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 50 "Y.y"
+#line 46 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data));;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 53 "Y.y"
+#line 49 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].code));;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 54 "Y.y"
+#line 50 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (2)].code)); strcat((yyval.code), (yyvsp[(2) - (2)].code));;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 57 "Y.y"
+#line 53 "Y.y"
     { 
         printf("%s %s %s\n", (yyvsp[(1) - (3)].data), (yyvsp[(2) - (3)].data), (yyvsp[(3) - (3)].code));
-        strcpy((yyval.code), (yyvsp[(3) - (3)].code)); strcat((yyval.code), " "); strcat((yyval.code), (yyvsp[(1) - (3)].data));
+        strcpy((yyval.code), (yyvsp[(3) - (3)].code)); CONCATENATE((yyval.code), " ", (yyvsp[(1) - (3)].data));
     ;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 61 "Y.y"
+#line 57 "Y.y"
     {
         printf("%s %s %s %s %s\n", (yyvsp[(1) - (5)].data), (yyvsp[(2) - (5)].data), (yyvsp[(3) - (5)].code), (yyvsp[(4) - (5)].data), (yyvsp[(5) - (5)].code));
-        strcpy((yyval.code), (yyvsp[(1) - (5)].data)); strcat((yyval.code), (yyvsp[(2) - (5)].data)); strcat((yyval.code), (yyvsp[(3) - (5)].code)); strcat((yyval.code), (yyvsp[(4) - (5)].data)); strcat((yyval.code), (yyvsp[(5) - (5)].code));
+        strcpy((yyval.code), (yyvsp[(1) - (5)].data)); CONCATENATE((yyval.code), (yyvsp[(2) - (5)].data), (yyvsp[(3) - (5)].code), (yyvsp[(4) - (5)].data), (yyvsp[(5) - (5)].code));
     ;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 65 "Y.y"
+#line 61 "Y.y"
     {
         printf("%s %s %s\n", (yyvsp[(1) - (3)].data), (yyvsp[(2) - (3)].data), (yyvsp[(3) - (3)].code));
-        strcpy((yyval.code), (yyvsp[(1) - (3)].data)); strcat((yyval.code), (yyvsp[(2) - (3)].data)); strcat((yyval.code), (yyvsp[(3) - (3)].code));
+        strcpy((yyval.code), (yyvsp[(1) - (3)].data)); CONCATENATE((yyval.code), (yyvsp[(2) - (3)].data), (yyvsp[(3) - (3)].code));
     ;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 69 "Y.y"
+#line 65 "Y.y"
     {
         printf("%s %s %s\n", (yyvsp[(1) - (3)].code), (yyvsp[(2) - (3)].data), (yyvsp[(3) - (3)].code));
-        strcpy((yyval.code), (yyvsp[(1) - (3)].code)); strcat((yyval.code), (yyvsp[(2) - (3)].data)); strcat((yyval.code), (yyvsp[(3) - (3)].code)); 
+        strcpy((yyval.code), (yyvsp[(1) - (3)].code)); CONCATENATE((yyval.code), (yyvsp[(2) - (3)].data), (yyvsp[(3) - (3)].code)); 
     ;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 73 "Y.y"
+#line 69 "Y.y"
     {
         printf("%s %s %s\n", (yyvsp[(1) - (3)].code), (yyvsp[(2) - (3)].data), (yyvsp[(3) - (3)].code));
-        strcpy((yyval.code), (yyvsp[(1) - (3)].code)); strcat((yyval.code), (yyvsp[(2) - (3)].data)); strcat((yyval.code), (yyvsp[(3) - (3)].code));
+        strcpy((yyval.code), (yyvsp[(1) - (3)].code)); CONCATENATE((yyval.code), (yyvsp[(2) - (3)].data), (yyvsp[(3) - (3)].code));
     ;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 77 "Y.y"
+#line 73 "Y.y"
     {
-        strcpy((yyval.code), (yyvsp[(1) - (3)].data)); strcat((yyval.code), (yyvsp[(2) - (3)].data)); strcat((yyval.code), (yyvsp[(3) - (3)].code));
+        strcpy((yyval.code), (yyvsp[(1) - (3)].data)); CONCATENATE((yyval.code), (yyvsp[(2) - (3)].data), (yyvsp[(3) - (3)].code));
     ;}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 82 "Y.y"
+#line 78 "Y.y"
     { 
-        strcpy((yyval.code), (yyvsp[(1) - (3)].data)); strcat((yyval.code), " ("); strcat((yyval.code), (yyvsp[(2) - (3)].code)); strcat((yyval.code), ") "); strcat((yyval.code), (yyvsp[(3) - (3)].data)); strcat((yyval.code), "\n");
+        strcpy((yyval.code), (yyvsp[(1) - (3)].data)); CONCATENATE((yyval.code), " (", (yyvsp[(2) - (3)].code), ") ", (yyvsp[(3) - (3)].data), "\n");
     ;}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 85 "Y.y"
-    { strcpy((yyval.code), "} "); strcat((yyval.code), (yyvsp[(1) - (1)].data)); strcat((yyval.code), " {\n"); ;}
+#line 81 "Y.y"
+    { strcpy((yyval.code), "} "); CONCATENATE((yyval.code), (yyvsp[(1) - (1)].data), " {\n");;}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 86 "Y.y"
-    { strcpy((yyval.code), "} "); strcat((yyval.code), (yyvsp[(1) - (2)].data)); strcat((yyval.code), " "); strcat((yyval.code), (yyvsp[(2) - (2)].code)); strcat((yyval.code), " {\n"); ;}
+#line 82 "Y.y"
+    { strcpy((yyval.code), "} "); CONCATENATE((yyval.code), (yyvsp[(1) - (2)].data), " ", (yyvsp[(2) - (2)].code), " {\n");;}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 87 "Y.y"
+#line 83 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data)); strcat((yyval.code), "\n");;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 90 "Y.y"
+#line 86 "Y.y"
     {
         printf("%s %s %s %s %s %s %s %s %s\n", (yyvsp[(1) - (9)].data), (yyvsp[(2) - (9)].data), (yyvsp[(3) - (9)].data), (yyvsp[(4) - (9)].data), (yyvsp[(5) - (9)].data), (yyvsp[(6) - (9)].data), (yyvsp[(7) - (9)].data), (yyvsp[(8) - (9)].data), (yyvsp[(9) - (9)].data));
         strcpy((yyval.code), (yyvsp[(1) - (9)].data)); strcat((yyval.code), " ("); 
-        strcat((yyval.code), (yyvsp[(2) - (9)].data)); strcat((yyval.code), (yyvsp[(3) - (9)].data)); strcat((yyval.code), (yyvsp[(4) - (9)].data)); strcat((yyval.code), "; ");
-        strcat((yyval.code), (yyvsp[(2) - (9)].data)); strcat((yyval.code), "<"); strcat((yyval.code), (yyvsp[(6) - (9)].data)); strcat((yyval.code), "; ");
-        strcat((yyval.code), (yyvsp[(2) - (9)].data)); strcat((yyval.code), "="); strcat((yyval.code), (yyvsp[(2) - (9)].data)); strcat((yyval.code), "+"); strcat((yyval.code), (yyvsp[(8) - (9)].data)); strcat((yyval.code), ";");
-        strcat((yyval.code), ") "); strcat((yyval.code), (yyvsp[(9) - (9)].data)); strcat((yyval.code), "\n");
+        CONCATENATE((yyval.code),(yyvsp[(2) - (9)].data), (yyvsp[(3) - (9)].data), (yyvsp[(4) - (9)].data),"; " );
+        CONCATENATE((yyval.code),(yyvsp[(2) - (9)].data), "<", (yyvsp[(6) - (9)].data),  "; ");
+        CONCATENATE((yyval.code), (yyvsp[(2) - (9)].data), "=", (yyvsp[(2) - (9)].data), "+", (yyvsp[(8) - (9)].data), ";")
+        CONCATENATE((yyval.code), ") ", (yyvsp[(9) - (9)].data), "\n")
     ;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 98 "Y.y"
+#line 94 "Y.y"
     {
-        strcpy((yyval.code), (yyvsp[(1) - (3)].data)); strcat((yyval.code), " ("); strcat((yyval.code), (yyvsp[(2) - (3)].code)); strcat((yyval.code), ") "); strcat((yyval.code), (yyvsp[(3) - (3)].data)); strcat((yyval.code), "\n");  
+        strcpy((yyval.code), (yyvsp[(1) - (3)].data)); CONCATENATE((yyval.code), " (", (yyvsp[(2) - (3)].code), ") ", (yyvsp[(3) - (3)].data), "\n");  
     ;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 101 "Y.y"
+#line 97 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data)); strcat((yyval.code), " {\n");;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 102 "Y.y"
-    {strcpy((yyval.code), "} "); strcat((yyval.code), (yyvsp[(1) - (2)].data)); strcat((yyval.code), " ("); strcat((yyval.code), (yyvsp[(2) - (2)].code)); strcat((yyval.code), ");\n");;}
+#line 98 "Y.y"
+    { CONCATENATE((yyval.code), "} ", (yyvsp[(1) - (2)].data), " (", (yyvsp[(2) - (2)].code), ");\n");;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 103 "Y.y"
+#line 99 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data)); strcat((yyval.code), "\n");;}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 104 "Y.y"
+#line 100 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data)); strcat((yyval.code), "\n");;}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 107 "Y.y"
+#line 103 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data));;}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 108 "Y.y"
+#line 104 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data));;}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 111 "Y.y"
+#line 107 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data));;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 112 "Y.y"
+#line 108 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data));;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 115 "Y.y"
+#line 111 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data));;}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 116 "Y.y"
+#line 112 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data));;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 117 "Y.y"
+#line 113 "Y.y"
     {strcpy((yyval.code), (yyvsp[(1) - (1)].data));;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1673 "Y.tab.c"
+#line 1648 "Y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1881,7 +1856,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 119 "Y.y"
+#line 115 "Y.y"
 
 
 void yyerror (const char *s) {

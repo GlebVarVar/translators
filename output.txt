@@ -3,13 +3,15 @@
 int main() {
   int a;
   int b;
-  bool c;
+  int c;
   a = b + c;
   b = 2 + 2;
   b = 2;
   c = true;
   if (a > b) {
     a = c * c;
+    a = a - 10;
+    a = a / 10;
   } else {
     b = c * c;
   }
@@ -21,6 +23,7 @@ int main() {
   }
   do {
     b = a * a;
+    while
   } while (a > 100);
   return 0;
 }

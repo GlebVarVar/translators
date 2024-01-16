@@ -1,7 +1,7 @@
 VAR
     a : INT;
     b : INT;
-    c : BOOL;
+    c : INT;
 END_VAR
 
 a := b + c;
@@ -11,6 +11,8 @@ c := TRUE;
 
 IF a > b THEN
     a := c * c;
+    a := a - 10;
+    a := a / 10;
 ELSE
     b := c * c;
 END_IF
@@ -22,6 +24,7 @@ END_FOR
 WHILE a < 100 DO
 	a := a * 10;
 END_WHILE
+
 
 REPEAT
     b := a * a;

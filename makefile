@@ -15,6 +15,10 @@ all: run format
 $(EXECUTABLE): lex.yy.c y.tab.c
 	$(CC) $^ -o $@
 
+
+# Генерация программы на языке ST
+# generate: 
+
 # Генерация файла lex.yy.c
 lex.yy.c: $(LEX_SOURCE)
 	$(LEX) $<

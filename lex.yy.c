@@ -305,7 +305,7 @@ static yyconst int yy_ec[256] =
         1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    1,    4,    1,    1,    1,    1,    4,    1,
-        1,    4,    4,    1,    1,    1,    4,    5,    5,    5,
+        1,    4,    4,    1,    4,    1,    4,    5,    5,    5,
         5,    5,    5,    5,    5,    5,    5,    6,    7,    4,
         8,    4,    1,    1,    9,   10,   11,   12,   13,   14,
        15,   16,   17,   11,   11,   18,   11,   19,   20,   21,
@@ -420,14 +420,17 @@ char *yytext;
 #line 1 "L.l"
 #define INITIAL 0
 #line 2 "L.l"
-#include <stdio.h>
+// Внутри этого блока можно добавлять код на языке Си. Сюда добавляются
+// подключения различных заголовочных файлов, объявления типов и функций,
+// которые будут использоваться при работе лексического анализатора.
 #include <stdlib.h>
 #include <string.h>
 #include "y.tab.h"
 
 extern FILE* yyin;
 extern FILE* yyout;
-#line 431 "lex.yy.c"
+#define RETURN_TOKEN(TYPE, VALUE) { strcpy(yylval.data, VALUE); return TYPE; }
+#line 434 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -578,9 +581,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 11 "L.l"
+#line 15 "L.l"
 
-#line 584 "lex.yy.c"
+#line 587 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -665,165 +668,165 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 12 "L.l"
+#line 16 "L.l"
 {}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 13 "L.l"
+#line 17 "L.l"
 {}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 14 "L.l"
+#line 18 "L.l"
 {}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 16 "L.l"
-{strcpy(yylval.data, "int"); return INT;}
+#line 20 "L.l"
+RETURN_TOKEN(INT, "int")
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 17 "L.l"
-{strcpy(yylval.data, "char*"); return STRING;}
+#line 21 "L.l"
+RETURN_TOKEN(STRING, "char*")
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 18 "L.l"
-{strcpy(yylval.data, "bool"); return BOOL;}
+#line 22 "L.l"
+RETURN_TOKEN(BOOL, "bool")
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 20 "L.l"
-{strcpy(yylval.data, "true"); return TRUE;}
+#line 24 "L.l"
+RETURN_TOKEN(TRUE, "true")
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 21 "L.l"
-{strcpy(yylval.data, "false"); return FALSE;}
+#line 25 "L.l"
+RETURN_TOKEN(FALSE, "false")
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 23 "L.l"
-{strcpy(yylval.data, ""); return TO;}
+#line 27 "L.l"
+RETURN_TOKEN(TO, "")
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 24 "L.l"
-{strcpy(yylval.data, ""); return BY;}
+#line 28 "L.l"
+RETURN_TOKEN(BY, "")
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 25 "L.l"
-{strcpy(yylval.data, "{"); return DO;}
+#line 29 "L.l"
+RETURN_TOKEN(DO, "{")
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 27 "L.l"
-{strcpy(yylval.data, "if"); return IF;}
+#line 31 "L.l"
+RETURN_TOKEN(IF, "if")
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 28 "L.l"
-{strcpy(yylval.data, "else"); return ELSE;}
+#line 32 "L.l"
+RETURN_TOKEN(ELSE, "else")
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 29 "L.l"
-{strcpy(yylval.data, "else if"); return ELSEIF;}
+#line 33 "L.l"
+RETURN_TOKEN(ELSEIF, "else if")
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 30 "L.l"
-{strcpy(yylval.data, "}"); return END_IF;}
+#line 34 "L.l"
+RETURN_TOKEN(END_IF, "}")
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 31 "L.l"
-{strcpy(yylval.data, "{");return THEN;}
+#line 35 "L.l"
+RETURN_TOKEN(THEN, "{")
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 33 "L.l"
-{strcpy(yylval.data, "while"); return WHILE;}
+#line 37 "L.l"
+RETURN_TOKEN(WHILE, "while")
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 34 "L.l"
-{strcpy(yylval.data, "}");	return END_WHILE;}
+#line 38 "L.l"
+RETURN_TOKEN(END_WHILE, "}")
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 36 "L.l"
-{strcpy(yylval.data, "do"); return REPEAT;}
+#line 40 "L.l"
+RETURN_TOKEN(REPEAT, "do")
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 37 "L.l"
-{strcpy(yylval.data, "while"); return UNTIL;}
+#line 41 "L.l"
+RETURN_TOKEN(UNTIL, "while")
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 39 "L.l"
-{strcpy(yylval.data, "for"); return FOR;}
+#line 43 "L.l"
+RETURN_TOKEN(FOR, "for")
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 40 "L.l"
-{strcpy(yylval.data, "}");	return END_FOR;}
+#line 44 "L.l"
+RETURN_TOKEN(END_FOR, "}")
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 42 "L.l"
-{strcpy(yylval.data, "=");  return ASSIGN;}
+#line 46 "L.l"
+RETURN_TOKEN(ASSIGN, "=")
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 43 "L.l"
-{strcpy(yylval.data, "==");  return EQUAL;}
+#line 47 "L.l"
+RETURN_TOKEN(EQUAL, "==")
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 45 "L.l"
-{strcpy(yylval.data,yytext); return TYPE; }
+#line 49 "L.l"
+RETURN_TOKEN(TYPE, yytext)
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 46 "L.l"
-{strcpy(yylval.data, ";\n"); return SEMICOLON; }
+#line 50 "L.l"
+RETURN_TOKEN(SEMICOLON, ";\n")
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 48 "L.l"
-{strcpy(yylval.data, yytext); return SIGNS;}
+#line 52 "L.l"
+RETURN_TOKEN(SIGNS, yytext)
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 49 "L.l"
+#line 53 "L.l"
 ;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 51 "L.l"
-{strcpy(yylval.data,yytext); 	   return NUMBERS; }
+#line 55 "L.l"
+RETURN_TOKEN(NUMBERS, yytext)
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 52 "L.l"
-{strcpy(yylval.data,yytext); 	   return LETTERS; }
+#line 56 "L.l"
+RETURN_TOKEN(LETTERS, yytext)
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 53 "L.l"
-{ fprintf(stderr, "Unrecognized character %c in input\n", *yytext); }
+#line 57 "L.l"
+{ fprintf(stderr, "Unrecognized character %c in input\n", *yytext); } 
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 54 "L.l"
+#line 59 "L.l"
 ECHO;
 	YY_BREAK
-#line 827 "lex.yy.c"
+#line 830 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1709,8 +1712,9 @@ int main()
 	return 0;
 	}
 #endif
-#line 54 "L.l"
+#line 59 "L.l"
+
 
 int yywrap(){
-	return 1;
+    return 1;
 }

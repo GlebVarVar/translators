@@ -1,57 +1,63 @@
 %{
-#include <stdio.h>
+// Внутри этого блока можно добавлять код на языке Си. Сюда добавляются
+// подключения различных заголовочных файлов, объявления типов и функций,
+// которые будут использоваться при работе лексического анализатора.
 #include <stdlib.h>
 #include <string.h>
 #include "y.tab.h"
 
 extern FILE* yyin;
 extern FILE* yyout;
+#define RETURN_TOKEN(TYPE, VALUE) { strcpy(yylval.data, VALUE); return TYPE; }
 %}
 
+
 %%
-"VAR"		{}
-"END_VAR"	{}
+"VAR"        {}
+"END_VAR"    {}
 "END_REPEAT" {}
 
-"INT"		{strcpy(yylval.data, "int"); return INT;}
-"STRING"	{strcpy(yylval.data, "char*"); return STRING;}
-"BOOL"		{strcpy(yylval.data, "bool"); return BOOL;}
+"INT"        RETURN_TOKEN(INT, "int")
+"STRING"     RETURN_TOKEN(STRING, "char*")
+"BOOL"       RETURN_TOKEN(BOOL, "bool")
 
-"TRUE"		{strcpy(yylval.data, "true"); return TRUE;}
-"FALSE"		{strcpy(yylval.data, "false"); return FALSE;}
+"TRUE"       RETURN_TOKEN(TRUE, "true")
+"FALSE"      RETURN_TOKEN(FALSE, "false")
 
-"TO"		{strcpy(yylval.data, ""); return TO;}
-"BY"		{strcpy(yylval.data, ""); return BY;}
-"DO"		{strcpy(yylval.data, "{"); return DO;}
+"TO"         RETURN_TOKEN(TO, "")
+"BY"         RETURN_TOKEN(BY, "")
+"DO"         RETURN_TOKEN(DO, "{")
 
-"IF"		{strcpy(yylval.data, "if"); return IF;}
-"ELSE"		{strcpy(yylval.data, "else"); return ELSE;}
-"ELSEIF"	{strcpy(yylval.data, "else if"); return ELSEIF;}
-"END_IF"	{strcpy(yylval.data, "}"); return END_IF;}
-"THEN"		{strcpy(yylval.data, "{");return THEN;}
+"IF"         RETURN_TOKEN(IF, "if")
+"ELSE"       RETURN_TOKEN(ELSE, "else")
+"ELSEIF"     RETURN_TOKEN(ELSEIF, "else if")
+"END_IF"     RETURN_TOKEN(END_IF, "}")
+"THEN"       RETURN_TOKEN(THEN, "{")
 
-"WHILE"		{strcpy(yylval.data, "while"); return WHILE;}
-"END_WHILE"	{strcpy(yylval.data, "}");	return END_WHILE;}
+"WHILE"      RETURN_TOKEN(WHILE, "while")
+"END_WHILE"  RETURN_TOKEN(END_WHILE, "}")
 
-"REPEAT"		{strcpy(yylval.data, "do"); return REPEAT;}
-"UNTIL"		{strcpy(yylval.data, "while"); return UNTIL;}
+"REPEAT"     RETURN_TOKEN(REPEAT, "do")
+"UNTIL"      RETURN_TOKEN(UNTIL, "while")
 
-"FOR"		{strcpy(yylval.data, "for"); return FOR;}
-"END_FOR"	{strcpy(yylval.data, "}");	return END_FOR;}
+"FOR"        RETURN_TOKEN(FOR, "for")
+"END_FOR"    RETURN_TOKEN(END_FOR, "}")
 
-":=" 		{strcpy(yylval.data, "=");  return ASSIGN;}
-"=" 		{strcpy(yylval.data, "==");  return EQUAL;}
+":="         RETURN_TOKEN(ASSIGN, "=")
+"="          RETURN_TOKEN(EQUAL, "==")
 
-":"			{strcpy(yylval.data,yytext); return TYPE; }
-";" 		{strcpy(yylval.data, ";\n"); return SEMICOLON; }
+":"          RETURN_TOKEN(TYPE, yytext)
+";"          RETURN_TOKEN(SEMICOLON, ";\n")
 
-["+""-""*""/""\\""<"">""<="">=""'""\""] {strcpy(yylval.data, yytext); return SIGNS;}
-[ \t\n\r]  	;
+["+""\-""*""/""\\""<"">""<="">=""'""\""] RETURN_TOKEN(SIGNS, yytext)
+[ \t\n\r]    ;
 
-[0-9]+ 		{strcpy(yylval.data,yytext); 	   return NUMBERS; }
-[a-zA-Z]+	{strcpy(yylval.data,yytext); 	   return LETTERS; }
-. { fprintf(stderr, "Unrecognized character %c in input\n", *yytext); }
+[0-9]+       RETURN_TOKEN(NUMBERS, yytext)
+[a-zA-Z]+    RETURN_TOKEN(LETTERS, yytext)
+.            { fprintf(stderr, "Unrecognized character %c in input\n", *yytext); } 
+
 %%
+
 int yywrap(){
-	return 1;
+    return 1;
 }
